@@ -1,13 +1,13 @@
 import React, {useMemo, useState} from "react";
-import './styles/App.css'
+import './styles/App.css';
 import PostList from "./components/PostList";
 import PostForm from "./components/PostForm";
-import MySelect from "./components/UI/select/MySelect";
-import MyInput from "./components/UI/input/MyInput";
 import PostFilter from "./components/PostFilter";
+import MyModal from "./components/UI/modal/MyModal";
+import MyButton from "./components/UI/button/MyButton";
 
 // https://www.youtube.com/watch?v=GNrdg3PzpJQ&t=3484s
-// 1:23
+// 1:33
 
 function App() {
 
@@ -30,9 +30,10 @@ function App() {
     ])
 
     const [filter, setFilter] = useState({sort: '', query: ''});
+    const [modal, setModal] = useState(false);
+
 
     const sortedPosts = useMemo(() => {
-        console.log('function ---> getSortedPosts()')
         if (filter.sort) {
             return [...posts].sort((a, b) => a[filter.sort].localeCompare(b[filter.sort]));
         }
@@ -45,7 +46,8 @@ function App() {
 
 
     const createPost = (newPost) => {
-        setPosts([...posts, newPost])
+        setPosts([...posts, newPost]);
+        setModal(false);
     }
 
     const removePost = (post) => {
@@ -55,17 +57,17 @@ function App() {
 
     return (
         <div className="App">
+            <MyButton style={{marginTop: 30}} onClick={() => setModal(true)}>Create</MyButton>
+
+            <MyModal visible={modal} setVisible={setModal}>
             <PostForm create={createPost}/>
+            </MyModal>
+
             <hr style={{margin: '15px 0'}}/>
 
             <PostFilter filter={filter} setFilter={setFilter}/>
+            <PostList posts={sortedAndSearchedPosts} title={'Posts'} removePost={removePost}/>
 
-            {sortedAndSearchedPosts.length
-                ? <PostList posts={sortedAndSearchedPosts} title={'Posts'} removePost={removePost}/>
-                : <h1 style={{textAlign: 'center'}}>
-                    Posts are not found
-                </h1>
-            }
 
         </div>
     );
