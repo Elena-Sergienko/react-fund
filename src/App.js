@@ -9,7 +9,7 @@ import {usePosts} from "./hooks/usePost";
 import PostService from "./API/PostService";
 import Loader from "./components/UI/loader/Loader";
 import {useFetching} from "./hooks/useFetching";
-import {getPagesCount} from "./utils/pages";
+import {getPagesArray, getPagesCount} from "./utils/pages";
 
 // https://www.youtube.com/watch?v=GNrdg3PzpJQ&t=3484s
 // 2:00
@@ -23,6 +23,8 @@ function App() {
     const [limit, setLimit] = useState(10);
     const [page, setPage] = useState(1);
     const sortedAndSearchedPosts = usePosts(posts, filter.sort, filter.query);
+    let pagesArray = getPagesArray(totalPages);
+
     const [fetchPosts, isPostsLoading, postError] = useFetching(async () => {
         const response = await PostService.getAll(limit, page);
         setPosts(response.data);
@@ -58,12 +60,24 @@ function App() {
             <PostFilter filter={filter} setFilter={setFilter}/>
 
             {postError &&
-                <h1 style={{color: '#dc3545', margin: 30, textAlign: 'center'}}>Error: {postError}</h1>
+            <h1 style={{color: '#dc3545', margin: 30, textAlign: 'center'}}>Error: {postError}</h1>
             }
             {isPostsLoading
                 ? <div style={{display: 'flex', justifyContent: 'center', marginTop: 50}}><Loader/></div>
-            : <PostList posts={sortedAndSearchedPosts} title={'Posts'} removePost={removePost}/>
+                : <PostList posts={sortedAndSearchedPosts} title={'Posts'} removePost={removePost}/>
             }
+
+            <div className="page__wrapper">
+                {pagesArray.map(p =>
+                    <span
+                        onClick={() => setPage(p)}
+                        key={p}
+                        className={page === p ? "page page__current" : "page"}
+                    >
+                        {p}
+                    </span>
+                )}
+            </div>
 
         </div>
     );
