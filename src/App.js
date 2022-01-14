@@ -10,6 +10,7 @@ import PostService from "./API/PostService";
 import Loader from "./components/UI/loader/Loader";
 import {useFetching} from "./hooks/useFetching";
 import {getPagesArray, getPagesCount} from "./utils/pages";
+import Pagination from "./components/UI/pagination/Pagination";
 
 // https://www.youtube.com/watch?v=GNrdg3PzpJQ&t=3484s
 // 2:00
@@ -23,19 +24,17 @@ function App() {
     const [limit, setLimit] = useState(10);
     const [page, setPage] = useState(1);
     const sortedAndSearchedPosts = usePosts(posts, filter.sort, filter.query);
-    let pagesArray = getPagesArray(totalPages);
 
-    const [fetchPosts, isPostsLoading, postError] = useFetching(async () => {
+    const [fetchPosts, isPostsLoading, postError] = useFetching(async (limit, page) => {
         const response = await PostService.getAll(limit, page);
         setPosts(response.data);
         const totalCount = response.headers['x-total-count'];
         setTotalPages(getPagesCount(totalCount, limit));
     })
 
-    console.log(totalPages);
     useEffect(() => {
-        fetchPosts();
-    }, [])
+        fetchPosts(limit, page);
+    }, [page])
 
     const createPost = (newPost) => {
         setPosts([...posts, newPost]);
@@ -46,6 +45,10 @@ function App() {
         setPosts(posts.filter(el => el.id !== post.id));
     }
 
+    const changePage = (page) => {
+        setPage(page);
+        fetchPosts(limit, page)
+    }
 
     return (
         <div className="App">
@@ -67,17 +70,7 @@ function App() {
                 : <PostList posts={sortedAndSearchedPosts} title={'Posts'} removePost={removePost}/>
             }
 
-            <div className="page__wrapper">
-                {pagesArray.map(p =>
-                    <span
-                        onClick={() => setPage(p)}
-                        key={p}
-                        className={page === p ? "page page__current" : "page"}
-                    >
-                        {p}
-                    </span>
-                )}
-            </div>
+            <Pagination page={page} changePage={changePage} totalPages={totalPages}/>
 
         </div>
     );
