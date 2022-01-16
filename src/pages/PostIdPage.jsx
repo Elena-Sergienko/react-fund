@@ -37,7 +37,7 @@ const PostIdPage = () => {
             {isComLoading
                 ? <Loader/>
                 : <div>{comments.map(comm =>
-                    <div style={{margin: 15}} key={Math.random()}>
+                    <div style={{margin: 15}} key={comm.id}>
                         <h5>{comm.email}</h5>
                         <div>{comm.body}</div>
                     </div>)
