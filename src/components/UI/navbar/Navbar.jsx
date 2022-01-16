@@ -1,16 +1,13 @@
 import React from 'react';
-import {BrowserRouter, Link, Route, Routes} from "react-router-dom";
-import About from "../../../pages/About";
-import Posts from "../../../pages/Posts";
+import {Link} from "react-router-dom";
 
 const Navbar = () => {
     return (
         <nav className="navbar">
             <div className="navbar__links">
-                <Link to="/about">About</Link>
-                <Link to="/posts">Posts</Link>
-
-
+                <Link to="/posts">🗱 Posts |</Link>
+                <Link to="/about">⎙ About |</Link>
+                <Link to="/"> 🏠 Home</Link>
             </div>
 
         </nav>

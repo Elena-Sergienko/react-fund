@@ -9,11 +9,9 @@ import {usePosts} from "../hooks/usePost";
 import PostService from "./../API/PostService";
 import Loader from "./../components/UI/loader/Loader";
 import {useFetching} from "../hooks/useFetching";
-import {getPagesArray, getPagesCount} from "../utils/pages";
+import {getPagesCount} from "../utils/pages";
 import Pagination from "../components/UI/pagination/Pagination";
 
-// https://www.youtube.com/watch?v=GNrdg3PzpJQ&t=3484s
-// 2:22
 
 function Posts() {
     const [posts, setPosts] = useState([])

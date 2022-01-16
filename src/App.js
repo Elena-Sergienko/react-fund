@@ -1,19 +1,16 @@
 import React from 'react';
-import {BrowserRouter, Link, Routes, Route} from "react-router-dom";
-import About from "./pages/About";
-import Posts from "./pages/Posts";
+import {BrowserRouter} from "react-router-dom";
 import Navbar from "./components/UI/navbar/Navbar";
-import Error from "./pages/Error";
 import AppRouter from "./components/AppRouter";
+
+// https://www.youtube.com/watch?v=GNrdg3PzpJQ&t=3484s
+// 2:32
 
 function App() {
     return (
         <BrowserRouter>
             <Navbar/>
             <AppRouter/>
-
-
-
         </BrowserRouter>
     );
 }
