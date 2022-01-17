@@ -4,8 +4,6 @@ import Navbar from "./components/UI/navbar/Navbar";
 import AppRouter from "./components/AppRouter";
 import {AuthContext} from "./context";
 
-// https://www.youtube.com/watch?v=GNrdg3PzpJQ&t=3484s
-// 2:32
 
 function App() {
     const [isAuth, setIsAuth] = useState(false);
